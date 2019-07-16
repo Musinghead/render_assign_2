@@ -167,17 +167,29 @@ void drawBrickCube()
         //   computation using Phong Reflection Model.
         // * Write computed fragment color to FragColor.
         /////////////////////////////////////////////////////////////////////////////
-        // vec3 ecTangent;
-        // vec3 ecBinormal;
-        // compute_tangent_vectors(ecNormal, ecPosition, v2fTexCoord.xy, ecTangent, ecBinormal);
+        vec3 ecTangent;
+        vec3 ecBinormal;
+        compute_tangent_vectors(ecNormal, ecPosition, v2fTexCoord.xy, ecTangent, ecBinormal);
 
-        vec3 BrickNormalMap_01 = texture(BrickNormalMap, v2fTexCoord.xy).rgb;
-        
+        // transform normal vector to [-1, 1]
+        vec3 BrickNormalValue_01 = texture(BrickNormalMap, v2fTexCoord.xy).rgb;
+        vec3 BrickNormalValue_n11 = normalize(BrickNormalMap_01 * 2.0 - 1.0);
+        // get diffuse and ambient color
+        vec3 BrickDiffuseValue = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
+        vec3 frag_ambient = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
+        // transform perturbation vector to eye space
+        mat3 TBN = mat3(ecTangent, ecBinormal, ecNormal);
+        vec3 ecBrickNormalValue = TBN * BrickNormalValue_n11;
+        // diffuse
+        float diffuse_cosine = max(dot(ecBrickNormalValue * lightVec), 0.0);
+        vec3 frag_diffuse = diffuse_cosine * BrickDiffuseValue;
+        // 
+
         ///////////////////////////////////
         // TASK 2: WRITE YOUR CODE HERE. //
         ///////////////////////////////////
 
-        FragColor = vec4(BrickNormalMap_01, 1.0);  // Replace this with your code.
+        FragColor = vec4(frag_ambient + frag_diffuse, 1.0);  // Replace this with your code.
     }
     else discard;
 }
