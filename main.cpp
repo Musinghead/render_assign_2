@@ -1,7 +1,7 @@
 //============================================================================
 // GROUP NUMBER: 1
 //
-// STUDENT NAME: 
+// STUDENT NAME: Hu
 // NUS User ID.: 
 //
 // STUDENT NAME: 
