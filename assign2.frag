@@ -181,7 +181,7 @@ void drawBrickCube()
         mat3 TBN = mat3(ecTangent, ecBinormal, ecNormal);
         vec3 ecBrickNormalValue = TBN * BrickNormalValue_n11;
         // diffuse
-        float diffuse_cosine = max(dot(ecBrickNormalValue * lightVec), 0.0);
+        float diffuse_cosine = max(dot(ecBrickNormalValue, lightVec), 0.0);
         vec3 frag_diffuse = diffuse_cosine * BrickDiffuseValue;
         // 
 
