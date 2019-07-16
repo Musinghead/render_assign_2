@@ -167,12 +167,17 @@ void drawBrickCube()
         //   computation using Phong Reflection Model.
         // * Write computed fragment color to FragColor.
         /////////////////////////////////////////////////////////////////////////////
+        // vec3 ecTangent;
+        // vec3 ecBinormal;
+        // compute_tangent_vectors(ecNormal, ecPosition, v2fTexCoord.xy, ecTangent, ecBinormal);
 
+        vec3 BrickNormalMap_01 = texture(BrickNormalMap, v2fTexCoord.xy).rgb;
+        
         ///////////////////////////////////
         // TASK 2: WRITE YOUR CODE HERE. //
         ///////////////////////////////////
 
-        FragColor = vec4(1.0, 0.0, 0.0, 1.0);  // Replace this with your code.
+        FragColor = vec4(BrickNormalMap_01, 1.0);  // Replace this with your code.
     }
     else discard;
 }
