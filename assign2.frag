@@ -176,21 +176,21 @@ void drawBrickCube()
         vec3 BrickNormalValue_n11 = normalize(BrickNormalValue_01 * 2.0 - 1.0);
         // get diffuse and ambient color
         vec3 BrickDiffuseValue = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
-        vec3 frag_ambient = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
+        vec3 frag_ambient = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb * LightAmbient.rgb;
         // transform perturbation vector to eye space
         vec3 ecBrickNormalValue =	BrickNormalValue_n11.x * ecTangent +
 									BrickNormalValue_n11.y * ecBinormal +
 									BrickNormalValue_n11.z * necNormal;
         // diffuse
         float diffuse_cosine = max(dot(ecBrickNormalValue, lightVec), 0.0);
-        vec3 frag_diffuse = diffuse_cosine * BrickDiffuseValue;
+        vec3 frag_diffuse = diffuse_cosine * LightDiffuse.rgb * BrickDiffuseValue;
         // 
 
         ///////////////////////////////////
         // TASK 2: WRITE YOUR CODE HERE. //
         ///////////////////////////////////
 
-        FragColor = vec4(frag_diffuse, 1.0);  // Replace this with your code.
+        FragColor = vec4(frag_ambient + frag_diffuse, 1.0);  // Replace this with your code.
     }
     else discard;
 }
