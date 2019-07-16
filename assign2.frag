@@ -180,17 +180,21 @@ void drawBrickCube()
         // transform perturbation vector to eye space
         vec3 ecBrickNormalValue =	BrickNormalValue_n11.x * ecTangent +
 									BrickNormalValue_n11.y * ecBinormal +
-									BrickNormalValue_n11.z * necNormal;
+									BrickNormalValue_n11.z * DeltaNormal_Z_Scale * necNormal;
         // diffuse
-        float diffuse_cosine = max(dot(ecBrickNormalValue, lightVec), 0.0);
-        vec3 frag_diffuse = diffuse_cosine * LightDiffuse.rgb * BrickDiffuseValue;
-        // 
+        float N_dot_L = max(dot(ecBrickNormalValue, lightVec), 0.0);
+        vec3 frag_diffuse = N_dot_L * LightDiffuse.rgb * BrickDiffuseValue;
+        // specular
+		vec3 reflectVec = reflect(-lightVec, ecBrickNormalValue);
+		float R_dot_V = max(dot(reflectVec, viewVec), 0.0);
+		float spec = (R_dot_V == 0.0) ? 0.0 : pow(R_dot_V, MatlShininess);
+		vec3 frag_specular = LightSpecular.rgb * spec;
 
         ///////////////////////////////////
         // TASK 2: WRITE YOUR CODE HERE. //
         ///////////////////////////////////
 
-        FragColor = vec4(frag_ambient + frag_diffuse, 1.0);  // Replace this with your code.
+        FragColor = vec4(frag_ambient + frag_diffuse + frag_specular, 1.0);  // Replace this with your code.
     }
     else discard;
 }
