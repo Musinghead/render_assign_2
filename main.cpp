@@ -1,11 +1,11 @@
 //============================================================================
 // GROUP NUMBER: 1
 //
-// STUDENT NAME: Hu
-// NUS User ID.: 
-//
 // STUDENT NAME: 
 // NUS User ID.: 
+//
+// STUDENT NAME: Hu Qihai
+// NUS User ID.: t0918554
 //
 // STUDENT NAME: Kuang Zhiyi
 // NUS User ID.: t0918062
@@ -325,9 +325,7 @@ static void MyDrawFunc(void)
     ///////////////////////////////////
     // TASK 1: WRITE YOUR CODE HERE. //
     ///////////////////////////////////
-	modelMat0 = glm::translate(modelMat0, camWorldPos);
     modelMat0 = glm::scale(modelMat0, glm::vec3(skyboxSize, skyboxSize, skyboxSize));
-	
 
     glm::mat4 modelViewMat0 = viewMat * modelMat0;
     glm::mat4 modelViewProjMat0 = projMat * modelViewMat0;
