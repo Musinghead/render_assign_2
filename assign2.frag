@@ -172,8 +172,10 @@ void drawBrickCube()
         compute_tangent_vectors(necNormal, ecPosition, v2fTexCoord.xy, ecTangent, ecBinormal);
         // transform normal vector to [-1, 1]
         vec3 BrickNormalValue_01 = texture(BrickNormalMap, v2fTexCoord.xy).rgb;
-        vec3 BrickNormalValue_n11 = normalize(BrickNormalValue_01 * 2.0 - 1.0);
-        BrickNormalValue_n11.z *= DeltaNormal_Z_Scale;
+		// n11: negative 1 to 1
+        vec3 BrickNormalValue_n11 = BrickNormalValue_01 * 2.0 - 1.0;
+        // exaggerate the height of bump
+		BrickNormalValue_n11.z *= DeltaNormal_Z_Scale;
         BrickNormalValue_n11 = normalize(BrickNormalValue_n11);
         // get diffuse and ambient color
         vec3 diffuseColor = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
