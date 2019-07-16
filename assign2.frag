@@ -173,12 +173,14 @@ void drawBrickCube()
         // transform normal vector to [-1, 1]
         vec3 BrickNormalValue_01 = texture(BrickNormalMap, v2fTexCoord.xy).rgb;
         vec3 BrickNormalValue_n11 = normalize(BrickNormalValue_01 * 2.0 - 1.0);
+        BrickNormalValue_n11.z *= DeltaNormal_Z_Scale;
+        BrickNormalValue_n11 = normalize(BrickNormalValue_n11);
         // get diffuse and ambient color
         vec3 diffuseColor = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
         // transform perturbation vector to eye space
         vec3 ecBrickNormal =	    BrickNormalValue_n11.x * ecTangent +
 									BrickNormalValue_n11.y * ecBinormal +
-									BrickNormalValue_n11.z * DeltaNormal_Z_Scale * necNormal;
+									BrickNormalValue_n11.z * necNormal;
         // diffuse
         float N_dot_L = max(dot(ecBrickNormal, lightVec), 0.0);
         // specular
