@@ -274,7 +274,6 @@ void drawWoodenCube()
         // TASK 3: WRITE YOUR CODE HERE. //
         ///////////////////////////////////
 
-        // Replace this with your code.
     }
     else discard;
 }
