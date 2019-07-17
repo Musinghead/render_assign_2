@@ -167,22 +167,24 @@ void drawBrickCube()
         //   computation using Phong Reflection Model.
         // * Write computed fragment color to FragColor.
         /////////////////////////////////////////////////////////////////////////////
-        vec3 ecTangent;
+        
+		// construct tangent and binormal vectors in eye space
+		vec3 ecTangent;
         vec3 ecBinormal;
         compute_tangent_vectors(necNormal, ecPosition, v2fTexCoord.xy, ecTangent, ecBinormal);
         // transform normal vector to [-1, 1]
-        vec3 BrickNormalValue_01 = texture(BrickNormalMap, v2fTexCoord.xy).rgb;
+        vec3 tanBrickNormalValue_01 = texture(BrickNormalMap, v2fTexCoord.xy).rgb;
 		// n11: negative 1 to 1
-        vec3 BrickNormalValue_n11 = BrickNormalValue_01 * 2.0 - 1.0;
+        vec3 tanBrickNormalValue_n11 = tanBrickNormalValue_01 * 2.0 - 1.0;
         // exaggerate the height of bump
-		BrickNormalValue_n11.z *= DeltaNormal_Z_Scale;
-        BrickNormalValue_n11 = normalize(BrickNormalValue_n11);
+		tanBrickNormalValue_n11.z *= DeltaNormal_Z_Scale;
+        tanBrickNormalValue_n11 = normalize(tanBrickNormalValue_n11);
         // get diffuse and ambient color
         vec3 diffuseColor = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
         // transform perturbation vector to eye space
-        vec3 ecBrickNormal =	    BrickNormalValue_n11.x * ecTangent +
-									BrickNormalValue_n11.y * ecBinormal +
-									BrickNormalValue_n11.z * necNormal;
+        vec3 ecBrickNormal =	    tanBrickNormalValue_n11.x * ecTangent +
+									tanBrickNormalValue_n11.y * ecBinormal +
+									tanBrickNormalValue_n11.z * necNormal;
         // diffuse
         float N_dot_L = max(dot(ecBrickNormal, lightVec), 0.0);
         // specular
