@@ -262,8 +262,8 @@ void drawWoodenCube()
         vec3 ecPerturbedNormal = TBN * tanPerturbedNormal;
         // light in mirror region
         vec3 ecReflect = reflect(-viewVec, ecPerturbedNormal);
-        vec3 wcReflect = inverse(ViewMatrix) * ecReflect;
-        vec3 reflectColor = texture(EnvMap, v2fTexCoord).rgb;
+        vec4 wcReflect = inverse(ViewMatrix) * vec4(ecReflect, 0.0);
+        vec3 reflectColor = texture(EnvMap, wcReflect.xyz).rgb;
 
         if (sqrDist >= MirrorRadius * MirrorRadius)
             FragColor = vec4(tempWood, 1.0);
