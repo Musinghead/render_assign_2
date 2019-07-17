@@ -257,7 +257,7 @@ void drawWoodenCube()
         float sqrDist = p.x * p.x + p.y * p.y;
         if (sqrDist >= MirrorRadius * MirrorRadius)  p = vec2(0.0);
         // perturbed normal vector
-        vec3 tanPerturbedNormal = normalize(vec3(p.x, p.y, 1));
+        vec3 tanPerturbedNormal = normalize(vec3(p.x, p.y, DeltaNormal_Z_Scale * 1.5));
         mat3 TBN = mat3(ecTangent, ecBinormal, necNormal);
         vec3 ecPerturbedNormal = TBN * tanPerturbedNormal;
         // light in mirror region
