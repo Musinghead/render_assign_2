@@ -237,12 +237,44 @@ void drawWoodenCube()
         //    -- Use world-space reflection vector to access environment cubemap.
         //    -- Write computed fragment color to FragColor.
         /////////////////////////////////////////////////////////////////////////////
+        // get diffuse color
+        vec3 diffuseColor = texture(WoodDiffuseMap, v2fTexCoord.xy).rgb;
+        // wood region
+        vec3 reflectVec = reflect(-lightVec, necNormal);
+        float N_dot_L = max(dot(necNormal, lightVec), 0.0);
+        float R_dot_V = max(dot(reflectVec, viewVec), 0.0);
+        float spec = (R_dot_V == 0) ? 0.0 : pow(R_dot_V, MatlShininess);
+        vec3 tempWood =     LightAmbient.rgb * diffuseColor +
+                            LightDiffuse.rgb * diffuseColor * N_dot_L +
+                            LightSpecular.rgb * spec;
+        // tangent and binormal vector
+        vec3 ecTangent;
+        vec3 ecBinormal;
+        compute_tangent_vectors(necNormal, ecPosition, v2fTexCoord.xy, ecTangent, ecBinormal);
+        // check if the point is in mirror region
+        vec2 c = MirrorTileDensity * v2fTexCoord.st;
+        vec2 p = fract(c) - vec2(0.5);
+        float sqrDist = p.x * p.x + p.y * p.y;
+        if (sqrDist >= MirrorRadius * MirrorRadius)  p = vec2(0.0);
+        // perturbed normal vector
+        vec3 tanPerturbedNormal = normalize(vec3(p.x, p.y, 1));
+        mat3 TBN = mat3(ecTangent, ecBinormal, necNormal);
+        vec3 ecPerturbedNormal = TBN * tanPerturbedNormal;
+        // light in mirror region
+        vec3 ecReflect = reflect(-viewVec, ecPerturbedNormal);
+        vec3 wcReflect = inverse(ViewMatrix) * ecReflect;
+        vec3 reflectColor = texture(EnvMap, v2fTexCoord).rgb;
+
+        if (sqrDist >= MirrorRadius * MirrorRadius)
+            FragColor = vec4(tempWood, 1.0);
+        else 
+            FragColor = vec4(reflectColor, 1.0);
 
         ///////////////////////////////////
         // TASK 3: WRITE YOUR CODE HERE. //
         ///////////////////////////////////
 
-        FragColor = vec4(0.0, 0.0, 1.0, 1.0);  // Replace this with your code.
+        // Replace this with your code.
     }
     else discard;
 }
