@@ -1,8 +1,8 @@
 //============================================================================
 // GROUP NUMBER: 1
 //
-// STUDENT NAME: 
-// NUS User ID.: 
+// STUDENT NAME: Bi Hanqi
+// NUS User ID.: t0918612
 //
 // STUDENT NAME: Hu Qihai
 // NUS User ID.: t0918554
@@ -326,7 +326,9 @@ static void MyDrawFunc(void)
     // TASK 1: WRITE YOUR CODE HERE. //
     ///////////////////////////////////
 
+	// translate the sky box according to the location of camera
 	modelMat0 = glm::translate(modelMat0, camWorldPos);
+	// scale the size of the sky box
     modelMat0 = glm::scale(modelMat0, glm::vec3(skyboxSize, skyboxSize, skyboxSize));
 
     glm::mat4 modelViewMat0 = viewMat * modelMat0;
