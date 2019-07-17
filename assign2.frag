@@ -183,6 +183,7 @@ void drawBrickCube()
         vec3 ecBrickNormal =	    BrickNormalValue_n11.x * ecTangent +
 									BrickNormalValue_n11.y * ecBinormal +
 									BrickNormalValue_n11.z * necNormal;
+        //----------
         // diffuse
         float N_dot_L = max(dot(ecBrickNormal, lightVec), 0.0);
         // specular
