@@ -183,7 +183,7 @@ void drawBrickCube()
         vec3 diffuseColor = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
         // transform perturbation vector to eye space
         vec3 ecBrickNormal = tanBrickNormalValue_n11.x * ecTangent +
-		                     tanBrickNormalValue_n11.y * ecBinormal +
+                             tanBrickNormalValue_n11.y * ecBinormal +
                              tanBrickNormalValue_n11.z * necNormal;
         // diffuse
         float N_dot_L = max(dot(ecBrickNormal, lightVec), 0.0);
