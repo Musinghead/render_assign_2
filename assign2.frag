@@ -168,33 +168,33 @@ void drawBrickCube()
         // * Write computed fragment color to FragColor.
         /////////////////////////////////////////////////////////////////////////////
         
-		// construct tangent and binormal vectors in eye space
-		vec3 ecTangent;
+        // construct tangent and binormal vectors in eye space
+        vec3 ecTangent;
         vec3 ecBinormal;
         compute_tangent_vectors(necNormal, ecPosition, v2fTexCoord.xy, ecTangent, ecBinormal);
         // transform normal vector to [-1, 1]
         vec3 tanBrickNormalValue_01 = texture(BrickNormalMap, v2fTexCoord.xy).rgb;
-		// n11: negative 1 to 1
+        // n11: negative 1 to 1
         vec3 tanBrickNormalValue_n11 = tanBrickNormalValue_01 * 2.0 - 1.0;
         // exaggerate the height of bump
-		tanBrickNormalValue_n11.z *= DeltaNormal_Z_Scale;
+        tanBrickNormalValue_n11.z *= DeltaNormal_Z_Scale;
         tanBrickNormalValue_n11 = normalize(tanBrickNormalValue_n11);
         // get diffuse and ambient color
         vec3 diffuseColor = texture(BrickDiffuseMap, v2fTexCoord.xy).rgb;
         // transform perturbation vector to eye space
-        vec3 ecBrickNormal =	    tanBrickNormalValue_n11.x * ecTangent +
-									tanBrickNormalValue_n11.y * ecBinormal +
-									tanBrickNormalValue_n11.z * necNormal;
+        vec3 ecBrickNormal = tanBrickNormalValue_n11.x * ecTangent +
+		                     tanBrickNormalValue_n11.y * ecBinormal +
+                             tanBrickNormalValue_n11.z * necNormal;
         // diffuse
         float N_dot_L = max(dot(ecBrickNormal, lightVec), 0.0);
         // specular
-		vec3 reflectVec = reflect(-lightVec, ecBrickNormal);
-		float R_dot_V = max(dot(reflectVec, viewVec), 0.0);
-		float spec = (R_dot_V == 0.0) ? 0.0 : pow(R_dot_V, MatlShininess);
+        vec3 reflectVec = reflect(-lightVec, ecBrickNormal);
+        float R_dot_V = max(dot(reflectVec, viewVec), 0.0);
+        float spec = (R_dot_V == 0.0) ? 0.0 : pow(R_dot_V, MatlShininess);
         // assemble
-        vec3 tempColor =    LightAmbient.rgb * diffuseColor + 
-                            LightDiffuse.rgb * diffuseColor * N_dot_L + 
-                            LightSpecular.rgb * spec;
+        vec3 tempColor = LightAmbient.rgb * diffuseColor + 
+                         LightDiffuse.rgb * diffuseColor * N_dot_L + 
+                         LightSpecular.rgb * spec;
         ///////////////////////////////////
         // TASK 2: WRITE YOUR CODE HERE. //
         ///////////////////////////////////
