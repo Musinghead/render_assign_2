@@ -329,7 +329,7 @@ static void MyDrawFunc(void)
 	// translate the sky box according to the location of camera
 	modelMat0 = glm::translate(modelMat0, camWorldPos);
 	// scale the size of the sky box
-    modelMat0 = glm::scale(modelMat0, glm::vec3(skyboxSize, skyboxSize, skyboxSize));
+	modelMat0 = glm::scale(modelMat0, glm::vec3(skyboxSize, skyboxSize, skyboxSize));
 
     glm::mat4 modelViewMat0 = viewMat * modelMat0;
     glm::mat4 modelViewProjMat0 = projMat * modelViewMat0;
